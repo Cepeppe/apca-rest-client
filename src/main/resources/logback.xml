@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!-- Cartella di output: ./logs (esclusa su Git con /logs/ nel .gitignore) -->
+    <property name="LOG_DIR"  value="${mm.logsDir:-logs}"/>
+    <property name="ROOT_LVL" value="${mm.level:-INFO}"/>
+
+    <property name="CONSOLE_PATTERN"
+              value="%highlight(%-5level) %date{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n%rEx"/>
+    <property name="FILE_PATTERN"
+              value="%date{ISO8601} %-5level [%thread] %logger{36} - %msg%n%rEx"/>
+
+    <!-- Console colorata -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern>${CONSOLE_PATTERN}</pattern></encoder>
+    </appender>
+
+    <!-- FILE GIORNALIERO: NIENTE <file> QUI -->
+    <appender name="FILE_DAILY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder><pattern>${FILE_PATTERN}</pattern></encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Nome attivo = logs/YYYY-MM-DD.log ; a mezzanotte quello di ieri viene compresso .gz -->
+            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Async per non bloccare i thread -->
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>4096</queueSize><neverBlock>true</neverBlock>
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+    <appender name="ASYNC_FILE_DAILY" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>8192</queueSize><neverBlock>true</neverBlock>
+        <appender-ref ref="FILE_DAILY"/>
+    </appender>
+
+    <root level="${ROOT_LVL}">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="ASYNC_FILE_DAILY"/>
+    </root>
+</configuration>

@@ -1,0 +1,139 @@
+# --- Maven build output ---
+/target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# --- Maven wrapper (keep jar) ---
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- IDEs ---
+# IntelliJ IDEA
+.idea
+.idea/*
+!.idea/.gitignore
+!.idea/misc.xml
+!.idea/encodings.xml
+!.idea/vcs.xml
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/runConfigurations/
+# user-specific/noisy
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/httpRequests/
+.idea/dictionaries/
+.idea/caches/
+.idea/libraries/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+
+# --- Logs (project-local) ---
+/logs/
+*.log
+*.log.gz
+*.out
+*.err
+
+# --- Java / tooling crash dumps ---
+hs_err_pid*
+replay_pid*
+
+# --- Coverage & reports ---
+/site/
+/surefire-reports/
+/failsafe-reports/
+jacoco.exec
+
+# --- Local env & secrets (DON'T COMMIT SECRETS) ---
+.env
+.env.*
+*.env
+*.local
+*.secret
+*.secrets
+*.key
+*.pem
+*.crt
+*.p12
+keystore.jks
+
+# --- Data/cache/scratch (se usi cartelle locali) ---
+/tmp/
+/cache/
+/scratch/
+/data/**
+!/data/.gitkeep
+
+# --- Node/yarn if presenti in repo (ignora se non usi) ---
+node_modules/
+yarn.lock
+
+# --- IMPORTANT: DO NOT ignore all XML globally ---
+# RIMOSSO: '*.xml' globale che occultava logback.xml e config importanti
+# Se vuoi ignorare solo gli XML generati dall'IDE, lascia le regole .idea/ sopra.
+
+# --- Keep logger config tracked ---
+!src/main/resources/logback.xml
+
+# IntelliJ
+.idea/*
+!.idea/misc.xml
+!.idea/encodings.xml
+# If you really want to share VCS mapping, uncomment:
+# !/.idea/vcs.xml
+
+# Module files (Maven/Gradle regenerate)
+*.iml
+
+# Build output
+target/
+
+# OS cruft
+.DS_Store
+
+# Secrets / local config
+*.properties
+!src/main/resources/*.properties        # allow committed app defaults
+!*.example.properties                   # allow templates
+.env
+*.local.properties
+
+# Virtual env locali
+.venv/
+venv/
+env/
+
+# Cache e temporanei Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Output
+data/cache/
+data/exports/*.xlsx
