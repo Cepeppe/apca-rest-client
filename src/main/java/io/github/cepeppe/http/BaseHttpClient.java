@@ -174,7 +174,7 @@ public class BaseHttpClient implements HttpClientPort {
 
     /**
      * Carica i parametri di retry da variabili d'ambiente, se presenti;
-     * in caso contrario utilizza i valori di default definiti in {@code com.moneymachine.Constants.Http}.
+     * in caso contrario utilizza i valori di default definiti in {@code Constants.Http}.
      *
      * Protezione contro null su retryStatusSet.
      * Caricati cap e jitter (con default sicuri).

@@ -105,7 +105,7 @@ public class AlpacaTradingApiPlayground_B {
 
             // Esempio d’uso dei metodi utility del DTO (no accesso ai campi privati)
             if (!days.isEmpty()) {
-                AlpacaMarketCalendarDayResponse d0 = days.getFirst();
+                AlpacaMarketCalendarDayResponse d0 = days.get(0);
                 ZonedDateTime openET  = d0.openAtZone();
                 ZonedDateTime closeET = d0.closeAtZone();
 
@@ -457,7 +457,7 @@ public class AlpacaTradingApiPlayground_B {
 
     /**
      * Formatter brevissimo per eccezioni attese.
-     * Esempio: "EXPECTED IllegalArgumentException: end must be >= start @ com.moneymachine...AlpacaCalendarRestService.getMarketCalendarDays(..)"
+     * Esempio: "EXPECTED IllegalArgumentException: end must be >= start  ...
      */
     private static String briefExpected(Throwable t) {
         if (t == null) return "EXPECTED (no throwable)";
@@ -470,7 +470,7 @@ public class AlpacaTradingApiPlayground_B {
         if (st != null && st.length > 0) {
             StackTraceElement chosen = st[0];
             for (StackTraceElement el : st) {
-                if (el.getClassName() != null && el.getClassName().startsWith("com.moneymachine")) {
+                if (el.getClassName() != null && el.getClassName().startsWith("io.github.cepeppe")) {
                     chosen = el; break;
                 }
             }
