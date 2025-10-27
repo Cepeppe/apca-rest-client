@@ -88,9 +88,6 @@ JITTER_MIN      = 0.5
 JITTER_MAX      = 1.5
 
 # === Alpaca ===
-ALPACA_WS_URL      = wss://stream.data.alpaca.markets/v2/delayed_sip
-ALPACA_WS_URL_TEST = wss://stream.data.alpaca.markets/v2/test
-
 # Trading API v2
 ALPACA_TRADING_PRODUCTION_API_V2_URL = https://api.alpaca.markets/v2/
 ALPACA_TRADING_PAPER_API_V2_URL      = https://paper-api.alpaca.markets/v2/
