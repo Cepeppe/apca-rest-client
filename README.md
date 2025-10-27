@@ -59,7 +59,6 @@ mvn -q clean install   # add -DskipTests if desired
 ```
 
 ### Use as a dependency (example coordinates)
-> Replace with your actual published coordinates when available.
 ```xml
 <dependency>
   <groupId>io.github.cepeppe</groupId>
