@@ -61,9 +61,9 @@ mvn -q clean install   # add -DskipTests if desired
 > Replace with your actual published coordinates when available.
 ```xml
 <dependency>
-  <groupId>io.github.cepeppe</groupId>
+  <groupId>io.github.Cepeppe</groupId>
   <artifactId>apca-rest-client</artifactId>
-  <version>0.1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
