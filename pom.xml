@@ -54,6 +54,14 @@
         <commons-compress.version>1.28.0</commons-compress.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://github.com/Cepeppe/apca-rest-client</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <!-- Lombok (IDE compile-time). Maven usa anche il processor path sotto -->
         <dependency>
@@ -157,6 +165,7 @@
 
     <build>
         <plugins>
+
             <!-- Compiler plugin aggiornato + annotation processors definiti con proprietà esistenti -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

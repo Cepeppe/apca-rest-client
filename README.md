@@ -1,3 +1,4 @@
+
 <!-- NOTE: When copying from certain chat clients, this README is wrapped in a 4-backtick code fence to preserve Markdown. Copy everything between the outer fences into `README.md` and remove this comment. -->
 
 # Alpaca REST Client (Java)
@@ -61,7 +62,7 @@ mvn -q clean install   # add -DskipTests if desired
 > Replace with your actual published coordinates when available.
 ```xml
 <dependency>
-  <groupId>io.github.Cepeppe</groupId>
+  <groupId>io.github.cepeppe</groupId>
   <artifactId>apca-rest-client</artifactId>
   <version>1.1.1</version>
 </dependency>
@@ -122,70 +123,123 @@ MM_LOG_LEVEL = INFO
 
 ---
 
-## 💡 Quick Examples
+## 💡 Examples
 
-### Synchronous & Asynchronous calls
-```java
-var base       = /* choose paper or live base endpoints */;
-var clockSvc   = new AlpacaClockRestService(base);
-var accountSvc = new AlpacaAccountRestService(base);
+All **examples** live under:
 
-// Use a stable, per-account tag to aggregate rate-limit info (e.g., "PAPER:my-account"):
-String accTag = "PAPER:my-account";
-
-// GETs support retries when 'enableRetries=true'
-var clock = clockSvc.getMarketClockInfo(true, accTag);
-System.out.println("Market open? " + clock.isOpen());
-
-accountSvc.getAsyncAccountDetails(true, accTag)
-          .thenAccept(acc -> System.out.println("Account: " + acc.getId()))
-          .join();
+```
+src/main/java/io/github/cepeppe/examples/
 ```
 
-### Rate-limit monitoring (after your first API call)
-The library automatically updates a **multiton** from response headers.  
-You can **consult** it via **`AlpacaRateLimitMultiton`** (after at least one API call for a given tag):
+> Note: the project previously used “playgrounds”. All references were updated: they are now **examples**.
 
-```java
-// Example (method names may vary slightly across releases):
-// RateLimitSnapshot snap = AlpacaRateLimitMultiton.forTag(accTag).snapshot();
-// System.out.printf("limit=%d remaining=%d resetAt=%s%n",
-//     snap.getLimit(), snap.getRemaining(), snap.getResetInstant());
+### What’s included (single `examples` package)
+
+- `ExamplesSuite` — convenience launcher that runs a curated subset of examples.
+- `CoreClockAccountExample` — `GET /v2/clock` and `GET /v2/account` (sync + async).
+- `PortfolioHistoryExample` — `GET /v2/account/portfolio/history` (default, intraday-style, custom async).
+- `AssetsExample` — `GET /v2/assets` (list + filters) and `GET /v2/assets/{idOrSymbol}`.
+- `PositionsExample` — `GET /v2/positions` (list) and `GET /v2/positions/{idOrSymbol}` (404→null).  
+  Includes **danger-zone** close operations (commented by default).
+- `OrdersListingAndCancelExample` — list/get/cancel/cancel-all. **Safe** (no live creates).
+- `OrdersLifecycleExample` — **create → get → replace → cancel** (paper). **DRY RUN by default** (see flags below).
+- `CalendarExample` — `GET /v2/calendar` (range & single day).
+- `WatchlistsExample` — `GET/POST/DELETE /v2/watchlists` and helpers.
+- `AccountActivitiesExample` — `GET /v2/account/activities` (base/date/multi-type) and `/v2/account/activities/{activity_type}`.
+
+> Each class has a `public static void main(String[] args)` and can be run standalone.
+
+### How to run the examples
+
+#### 1) From your IDE (simplest)
+- Open the project in your IDE (IntelliJ/Eclipse/VS Code).
+- Ensure `APCA_API_KEY_ID` and `APCA_API_SECRET_KEY` are set (Run/Debug configuration or environment).
+- Run any class under `io.github.cepeppe.examples.*` (e.g., `ExamplesSuite`).
+
+#### 2) From Maven (exec plugin)
+
+Add (once) to your root `pom.xml` if not present:
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>3.3.0</version>
+      <configuration>
+        <cleanupDaemonThreads>true</cleanupDaemonThreads>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
 ```
 
-> The multiton is keyed by your **account tag** and reflects the latest `X-RateLimit-*` headers seen for that tag.
+Then run, for example:
+
+```bash
+# Run the suite (multiple demos)
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.ExamplesSuite exec:java
+
+# Or run a single demo:
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.CoreClockAccountExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.PortfolioHistoryExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.AssetsExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.PositionsExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.OrdersListingAndCancelExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.OrdersLifecycleExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.CalendarExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.WatchlistsExample exec:java
+mvn -q -Dexec.mainClass=io.github.cepeppe.examples.AccountActivitiesExample exec:java
+```
+
+> Tip: if you prefer, you can also create run profiles in your IDE bound to these commands.
+
+### Credentials & base URLs
+
+Before running, ensure the following are available in your environment (or as JVM system properties):
+
+- `APCA_API_KEY_ID` / `APCA_API_SECRET_KEY`
+- Optional base-URL overrides (if you’re not using the built-in defaults):
+  - `ALPACA_TRADING_PAPER_API_V2_URL`, `ALPACA_TRADING_PRODUCTION_API_V2_URL`, etc.
+
+### LIVE order toggles (for `OrdersLifecycleExample`)
+
+By default, `OrdersLifecycleExample` is in **DRY RUN**. To enable **live order submission (paper)**:
+
+- JVM property: `-Dmm.playground.liveOrders=true`
+- or environment variable: `MM_PLAYGROUND_LIVE_ORDERS=true`
+
+Optional parameters (system property with ENV fallback):
+
+- `mm.playground.symbol.crypto` (default: `BTCUSD`)
+- `mm.playground.notional` (default: `1.00` USD)
+- `mm.playground.limitPrice` (default: `100.00` — intentionally far from market to keep the order open)
+
+> ⚠️ **Danger zone**: Be mindful when using `PositionsExample` close operations or `cancelAllOrders` in `OrdersListingAndCancelExample`. These produce side effects.
 
 ---
 
 ## 🧱 Design Highlights
 
 - **HTTP client & retries**
-    - Retries are enabled **only for idempotent methods** (GET/HEAD/PUT/DELETE/OPTIONS).
-    - Backoff, cap, and jitter controlled by env (`BASE_BACKOFF_MS`, `BACKOFF_CAP_MS`, `JITTER_*`, etc.).
-    - For **non-idempotent** operations (e.g., `POST`), handle idempotency yourself if you introduce retries (e.g., idempotency keys).
+  - Retries are enabled **only for idempotent methods** (GET/HEAD/PUT/DELETE/OPTIONS).
+  - Backoff, cap, and jitter controlled by env (`BASE_BACKOFF_MS`, `BACKOFF_CAP_MS`, `JITTER_*`, etc.).
+  - For **non-idempotent** operations (e.g., `POST`), handle idempotency yourself if you introduce retries (e.g., idempotency keys).
 
 - **JSON/time policy**
-    - All timestamps as `java.time.Instant`.
-    - Default serialization: ISO-8601 UTC; optional epoch-millis for compactness.
+  - All timestamps as `java.time.Instant`.
+  - Default serialization: ISO-8601 UTC; optional epoch-millis for compactness.
 
 - **Errors**
-    - Non-OK HTTP or decoding issues raise domain exceptions with compact, useful context (without leaking secrets).
-
----
-
-## 🧪 Examples & Playgrounds
-
-The repository includes **example code** under playground packages for **documentation purposes**.  
-They demonstrate base endpoint selection (paper vs live), sync/async flows, safe logging, and rate-limit snapshots.
-
-> Treat them as **learning material**; names/structure may change in future refactors.
+  - Non-OK HTTP or decoding issues raise domain exceptions with compact, useful context (without leaking secrets).
 
 ---
 
 ## 🛠️ Build, Test, Run
 
 - Build: `mvn clean verify` (or `mvn -DskipTests clean package`)
-- Run examples: from your IDE or via Maven `exec:java` if configured
+- Run examples: via IDE or Maven Exec as shown above
 - Configure logging via JVM props, e.g. `-Dmm.level=INFO -Dmm.logsDir=logs`
 
 ---
