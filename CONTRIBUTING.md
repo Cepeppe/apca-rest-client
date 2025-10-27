@@ -14,7 +14,6 @@ Thanks for considering a contribution! This project welcomes issues, pull reques
 - [Testing](#testing)
 - [Pull Request Checklist](#pull-request-checklist)
 - [Review & Merge Process](#review--merge-process)
-- [Security](#security)
 - [Contact](#contact)
 
 ---
@@ -181,12 +180,6 @@ Good PR titles:
 - You may be asked to adjust tests, improve naming/structure, or split large PRs.
 - All CI checks must pass before merge.
 - Maintainers merge using **squash or rebase** for a clean history.
-
----
-
-## Security
-If you find a security issue, **do not** open a public issue.  
-Follow **SECURITY.md** for responsible disclosure.
 
 ---
 
