@@ -44,12 +44,14 @@
         <lombok.version>1.18.34</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <slf4j.version>2.0.13</slf4j.version>
-        <logback.version>1.5.6</logback.version>
+        <logback.version>1.5.20</logback.version>
         <okhttp.version>4.12.0</okhttp.version>
         <jackson.version>2.17.0</jackson.version>
         <dotenv.version>3.0.2</dotenv.version>
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.12.0</mockito.version>
+        <poi.version>5.4.1</poi.version>
+        <commons-compress.version>1.28.0</commons-compress.version>
     </properties>
 
     <dependencies>
@@ -142,7 +144,14 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.2.5</version>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- forza la versione sicura di Commons Compress -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${commons-compress.version}</version>
         </dependency>
     </dependencies>
 
