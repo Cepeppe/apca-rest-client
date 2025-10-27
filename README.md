@@ -53,7 +53,7 @@ If an endpoint you need is missing, please open an issue or a PR — it helps pr
 
 ### Build from source
 ```bash
-git clone https://github.com/<your-org-or-user>/apca-rest-client.git
+git clone https://github.com/Cepeppe/apca-rest-client.git
 cd apca-rest-client
 mvn -q clean install   # add -DskipTests if desired
 ```
