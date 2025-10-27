@@ -58,7 +58,7 @@ cd apca-rest-client
 mvn -q clean install   # add -DskipTests if desired
 ```
 
-### Use as a dependency (example coordinates)
+### Use as a dependency
 ```xml
 <dependency>
   <groupId>io.github.cepeppe</groupId>
